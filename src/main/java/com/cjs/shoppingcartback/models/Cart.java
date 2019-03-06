@@ -19,9 +19,8 @@ public class Cart
     @Column(nullable = false)
     private long custid;
 
-
-
-    // one cart to many items
-
+    @OneToMany(mappedBy = "cart")
+    @JsonIgnoreProperties("cart")
+    private Set<Item> items = new HashSet<>();
 
 }

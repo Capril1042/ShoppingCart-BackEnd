@@ -20,5 +20,7 @@ public class Item
     @JsonIgnore
     private Product product;
 
-
+    @ManyToOne
+    @JoinColumn(name = "cartid")
+    private Cart cart;
 }
