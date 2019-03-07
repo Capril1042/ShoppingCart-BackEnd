@@ -1,5 +1,6 @@
 package com.cjs.shoppingcartback.controllers;
 
+import com.cjs.shoppingcartback.models.Order;
 import com.cjs.shoppingcartback.models.Supplier;
 import com.cjs.shoppingcartback.repositories.OrderRepository;
 import com.cjs.shoppingcartback.repositories.ProductRepository;
@@ -19,11 +20,11 @@ public class ShopkeeperController
     @Autowired
     SupplierRepository supplierrepos;
 
-//    @Autowired
-//    ProductRepository productrepos;
-//
-//    @Autowired
-//    OrderRepository orderrepos;
+    @Autowired
+    ProductRepository productrepos;
+
+    @Autowired
+    OrderRepository orderrepos;
 
     @GetMapping("/suppliers")
     public List<Supplier> getAllSuppliers()
@@ -38,39 +39,96 @@ public class ShopkeeperController
         if (foundSupplier.isPresent())
         {
             return foundSupplier;
-        }
-        else
+        } else
         {
             return null;
         }
     }
 
-    @GetMapping("/supplier/{name}")
+    //TODO This does not work-fix it
+    @GetMapping("/supplier/name/{name}")
     public List<Supplier> getSupplierByName(@PathVariable String name)
     {
         return supplierrepos.findSupplierBySuppliernameLike(name);
     }
 
-    @PostMapping("/supplier")
+    //TODO this works but clean it up
+    @PostMapping("/add/supplier")
     public Supplier newSupplier(@RequestBody Supplier supplier) throws URISyntaxException
     {
         return supplierrepos.save(supplier);
     }
 
+
     //TODO add post and delete endpoints for supplier
-        // update supplier
-        // delete supplier?
+    // update supplier
+    // delete supplier?
 
     //TODO add endpoints for Products
-        //get products all and by id and by name
-        // update product price
-        // update product
-        // add new product
+    //get products all and by id and by name
+    // count quainity of items with product id
+    // update product price
+    // update product
+    // add new product
+
+    //TODO add Endpoints for items
+    //add items to product by supplier
+    //remove items
+
 
     //TODO add endpoints for Orders
-        // get all orders
-        // get all orders by orderid
-        // get all orders by customerid
-        // update order status
+
+    @GetMapping("/orders")
+    public List<Order> getAllOrders()
+    {
+        return orderrepos.findAll();
+    }
+
+    @GetMapping("/order/id/{id}")
+    public Optional<Order> getOrderById(@PathVariable long id)
+    {
+        Optional<Order> foundOrder = orderrepos.findById(id);
+        if (foundOrder.isPresent())
+        {
+            return foundOrder;
+        } else
+        {
+            return null;
+        }
+    }
+
+   @GetMapping("/orders/custid/{id}")
+    public List<Order> getOrdersByCustid(@PathVariable long id)
+   {
+       List<Order> foundOrders = orderrepos.findOrdersByCustomer_Custid(id);
+       if (foundOrders.isEmpty())
+       {
+           return null
+       }
+       else
+       {
+           return foundOrders;
+       }
+
+   }
+
+    @GetMapping("/orders/status/{orderstatus}")
+    public List<Order> OrdersByStatus(@PathVariable String orderstatus)
+    {
+        List<Order> foundOrders = orderrepos.getAllByOrderstatusEquals(orderstatus);
+        if (foundOrders.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return foundOrders;
+        }
+    }
+    // update order status
+
+    // get total price of order
+
+
 
 }
