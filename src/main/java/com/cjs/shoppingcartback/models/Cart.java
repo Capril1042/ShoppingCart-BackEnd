@@ -16,8 +16,11 @@ public class Cart
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long cartid;
 
-    @Column(nullable = false)
-    private long custid;
+    private String cartname;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "custid", referencedColumnName = "custid")
+    private Customer customer;
 
     @OneToMany(mappedBy = "cart")
     @JsonIgnoreProperties("cart")

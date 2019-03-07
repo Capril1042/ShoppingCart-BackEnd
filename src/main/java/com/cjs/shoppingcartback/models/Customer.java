@@ -34,6 +34,8 @@ public class Customer
     @Column(nullable = false)
     private String paymentmethod;
 
+    @OneToOne(mappedBy = "customer")
+    private Cart cart;
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnoreProperties("customer")

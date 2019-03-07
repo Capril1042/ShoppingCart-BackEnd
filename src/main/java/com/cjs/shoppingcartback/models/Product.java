@@ -1,6 +1,7 @@
 package com.cjs.shoppingcartback.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
 
@@ -35,8 +36,9 @@ public class Product
     private Set<Supplier> suppliers = new HashSet<>();
 
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "product")
-    @JsonIgnoreProperties("product")
+//    @JsonIgnoreProperties("product")
     private Set<Item> items = new HashSet<>();
 
 

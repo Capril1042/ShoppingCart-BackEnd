@@ -1,5 +1,6 @@
 package com.cjs.shoppingcartback.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -19,7 +20,7 @@ public class Supplier
     @Column(nullable = false)
     private String suppliername;
 
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "suppliers")
     @JsonIgnoreProperties("suppliers")
     private Set<Product> products = new HashSet<>();
