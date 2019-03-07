@@ -31,6 +31,7 @@ public class CustomerController
     // TODO- endpoints for order
     // get orders
     // add order
+    //cannot change or delete orders
 
 
 }

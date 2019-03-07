@@ -16,13 +16,15 @@ public class Item
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long itemid;
 
-    @JsonBackReference
+//    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "productid", nullable = false)
-//    @JsonIgnoreProperties("item")
+    @JsonIgnoreProperties("item")
     private Product product;
+
 
     @ManyToOne
     @JoinColumn(name = "cartid")
+    @JsonIgnore
     private Cart cart;
 }

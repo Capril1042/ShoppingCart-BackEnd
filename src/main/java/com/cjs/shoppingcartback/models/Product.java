@@ -1,5 +1,6 @@
 package com.cjs.shoppingcartback.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -28,17 +29,20 @@ public class Product
     private double productprice;
 
 
+
     @ManyToMany
     @JoinTable(name="productsuppliers",
             joinColumns = {@JoinColumn(name = "productid")},
             inverseJoinColumns = {@JoinColumn(name = "supplierid")})
     @JsonIgnoreProperties("products")
+    @JsonIgnore
     private Set<Supplier> suppliers = new HashSet<>();
 
 
-    @JsonManagedReference
+//    @JsonManagedReference
     @OneToMany(mappedBy = "product")
-//    @JsonIgnoreProperties("product")
+    @JsonIgnoreProperties("product")
+    @JsonIgnore
     private Set<Item> items = new HashSet<>();
 
 

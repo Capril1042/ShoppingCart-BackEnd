@@ -1,7 +1,10 @@
 package com.cjs.shoppingcartback.controllers;
 
+import com.cjs.shoppingcartback.models.Item;
 import com.cjs.shoppingcartback.models.Order;
+import com.cjs.shoppingcartback.models.Product;
 import com.cjs.shoppingcartback.models.Supplier;
+import com.cjs.shoppingcartback.repositories.ItemRepository;
 import com.cjs.shoppingcartback.repositories.OrderRepository;
 import com.cjs.shoppingcartback.repositories.ProductRepository;
 import com.cjs.shoppingcartback.repositories.SupplierRepository;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/shopkeep/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,6 +29,9 @@ public class ShopkeeperController
 
     @Autowired
     OrderRepository orderrepos;
+
+    @Autowired
+    ItemRepository itemrepos;
 
     @GetMapping("/suppliers")
     public List<Supplier> getAllSuppliers()
@@ -45,11 +52,19 @@ public class ShopkeeperController
         }
     }
 
-    //TODO This does not work-fix it
+    //TODO This works but not for duplicate names? fix model so that suppliername must be unique?
     @GetMapping("/supplier/name/{name}")
     public List<Supplier> getSupplierByName(@PathVariable String name)
     {
-        return supplierrepos.findSupplierBySuppliernameLike(name);
+        List<Supplier> foundSupplier = supplierrepos.findAllBySuppliernameEquals(name);
+        if (foundSupplier.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return foundSupplier;
+        }
     }
 
     //TODO this works but clean it up
@@ -60,23 +75,84 @@ public class ShopkeeperController
     }
 
 
-    //TODO add post and delete endpoints for supplier
-    // update supplier
-    // delete supplier?
+    @PutMapping("/supplier/id/{id}")
+    public List<Supplier> updateSupplier(@RequestBody Supplier newSupplier, @PathVariable long id) throws URISyntaxException
+    {
+        Optional<Supplier> updatedSupplier = supplierrepos.findById(id);
+        if (updatedSupplier.isPresent())
+        {
+            newSupplier.setSupplierid(id);
+            supplierrepos.save(newSupplier);
 
-    //TODO add endpoints for Products
-    //get products all and by id and by name
-    // count quainity of items with product id
+            return java.util.Arrays.asList(newSupplier);
+        }
+        else
+        {
+            return updatedSupplier.stream().collect(Collectors.toList());
+        }
+    }
+
+
+
+    @GetMapping("/products")
+    public List<Product> getAllProducts()
+    {
+        return productrepos.findAll();
+    }
+
+    @GetMapping("/product/id/{id}")
+    public Optional<Product> getProductById(@PathVariable long id)
+    {
+        return productrepos.findById(id);
+    }
+
+
+    @GetMapping("/product/countinventory/{id}")
+    public int countInventory(@PathVariable long id)
+    {
+        return itemrepos.findCountOfProduct(id);
+    }
+
+    // count quantity of items of a specfic product that are in a carts
+    @GetMapping("/product/countpending/{id}")
+    public int countPending(@PathVariable long id)
+    {
+        return itemrepos.findPendingInventory(id);
+    }
+
+    @GetMapping("/products/instock/{id}")
+    public int countStockOfProduct(@PathVariable long id)
+    {
+        int count = itemrepos.findCountOfProduct(id);
+        int pending = itemrepos.findPendingInventory(id);
+        return count- pending;
+    }
+
     // update product price
-    // update product
-    // add new product
 
-    //TODO add Endpoints for items
-    //add items to product by supplier
-    //remove items
+    // add new product to a supplier already in database
+
+    //add a new product with a new supplier
 
 
-    //TODO add endpoints for Orders
+
+    @GetMapping("/items")
+    public List<Item> getAllItems()
+    {
+        return itemrepos.findAll();
+    }
+
+    // get all items with supplierid
+
+    // get all items with produt id
+    @GetMapping("/items/productid/{id}")
+    public List<Item> getitemsbyProduct(@PathVariable long id)
+    {
+        return itemrepos.findItemByProductId(id);
+    }
+
+    // add items with product id and supplier id
+
 
     @GetMapping("/orders")
     public List<Order> getAllOrders()
@@ -103,7 +179,7 @@ public class ShopkeeperController
        List<Order> foundOrders = orderrepos.findOrdersByCustomer_Custid(id);
        if (foundOrders.isEmpty())
        {
-           return null
+           return null;
        }
        else
        {
@@ -125,9 +201,33 @@ public class ShopkeeperController
             return foundOrders;
         }
     }
-    // update order status
+
+    // update order status by customerid
+
+    //TODO when order is completed the items must be removed from??
+    @PutMapping("/order/id/{id}")
+    public List<Order> updateOrderStatusByOrderId(@RequestBody Order neworder, @PathVariable long id) throws URISyntaxException
+    {
+        Optional<Order> updatedOrder = orderrepos.findById(id);
+        if (updatedOrder.isPresent())
+        {
+            neworder.setOrderstatus("complete");
+            orderrepos.save(neworder);
+
+            return java.util.Arrays.asList(neworder);
+        }
+        else
+        {
+            return updatedOrder.stream().collect(Collectors.toList());
+        }
+    }
+
+    // update order status by order id
+
+
 
     // get total price of order
+
 
 
 

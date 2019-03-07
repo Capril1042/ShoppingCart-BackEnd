@@ -20,8 +20,9 @@ public class Supplier
     @Column(nullable = false)
     private String suppliername;
 
-    @JsonIgnore
+
     @ManyToMany(mappedBy = "suppliers")
     @JsonIgnoreProperties("suppliers")
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 }
