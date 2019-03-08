@@ -22,9 +22,21 @@ public class Item
     @JsonIgnoreProperties("item")
     private Product product;
 
+    @Column(nullable=false)
+    private boolean incart;
+
+    @Column(nullable=false)
+    private boolean bought;
 
     @ManyToOne
     @JoinColumn(name = "cartid")
     @JsonIgnore
     private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "orderid")
+    @JsonIgnore
+    private Order order;
+
+
 }

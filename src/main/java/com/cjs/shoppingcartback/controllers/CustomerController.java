@@ -1,6 +1,12 @@
 package com.cjs.shoppingcartback.controllers;
 
 
+import com.cjs.shoppingcartback.models.Cart;
+import com.cjs.shoppingcartback.models.Item;
+import com.cjs.shoppingcartback.models.Product;
+import com.cjs.shoppingcartback.repositories.CartRepository;
+import com.cjs.shoppingcartback.repositories.ItemRepository;
+import com.cjs.shoppingcartback.repositories.OrderRepository;
 import com.cjs.shoppingcartback.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,22 +21,33 @@ import java.util.List;
 @RequestMapping(value = "/customer/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CustomerController
 {
-//    @Autowired
-//    ProductRepository productrepos;
+    @Autowired
+    CartRepository cartrepos;
 
+    @Autowired
+    OrderRepository orderrepos;
 
-    //TODO add endpoints for products
+    @Autowired
+    ItemRepository itemrepos;
+
 
     // TODO add endpoints for items
 
     //TODO- endpoints for cart
     // get all items in cart - customer/cart/{customerid}
+//    @GetMapping("cart/items/{id}")
+//    public List<Item> getItemsinCart(long id)
+//    {
+//        return itemrepos.getAllCartItems(id);
+//    }
     // remove items from cart - customer/{customerid}/cart/{itemid}
     // adds item to cart customer/{customerid}/cart/{itemid}
 
     // TODO- endpoints for order
-    // get orders
-    // add order
+    // add order - adds an order with a statua of pending
+    // removes cartid from order
+
+
     //cannot change or delete orders
 
 

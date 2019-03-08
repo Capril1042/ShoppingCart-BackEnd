@@ -25,9 +25,12 @@ public class Order
     private Customer customer;
 
     @Column(nullable=false)
-    private String orderstatus;
+    private boolean ordercomplete;
 
 
+    @OneToMany(mappedBy = "order")
+    @JsonIgnoreProperties("order")
+    private Set<Item> items = new HashSet<>();
 
 
 

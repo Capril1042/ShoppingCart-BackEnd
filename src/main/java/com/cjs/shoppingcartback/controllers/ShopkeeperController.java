@@ -1,9 +1,6 @@
 package com.cjs.shoppingcartback.controllers;
 
-import com.cjs.shoppingcartback.models.Item;
-import com.cjs.shoppingcartback.models.Order;
-import com.cjs.shoppingcartback.models.Product;
-import com.cjs.shoppingcartback.models.Supplier;
+import com.cjs.shoppingcartback.models.*;
 import com.cjs.shoppingcartback.repositories.ItemRepository;
 import com.cjs.shoppingcartback.repositories.OrderRepository;
 import com.cjs.shoppingcartback.repositories.ProductRepository;
@@ -92,41 +89,20 @@ public class ShopkeeperController
         }
     }
 
-
-
-    @GetMapping("/products")
-    public List<Product> getAllProducts()
-    {
-        return productrepos.findAll();
-    }
-
-    @GetMapping("/product/id/{id}")
-    public Optional<Product> getProductById(@PathVariable long id)
-    {
-        return productrepos.findById(id);
-    }
-
-
     @GetMapping("/product/countinventory/{id}")
     public int countInventory(@PathVariable long id)
     {
         return itemrepos.findCountOfProduct(id);
     }
 
-    // count quantity of items of a specfic product that are in a carts
+    // count quantity of items of a specific product that are in a carts
     @GetMapping("/product/countpending/{id}")
     public int countPending(@PathVariable long id)
     {
         return itemrepos.findPendingInventory(id);
     }
 
-    @GetMapping("/products/instock/{id}")
-    public int countStockOfProduct(@PathVariable long id)
-    {
-        int count = itemrepos.findCountOfProduct(id);
-        int pending = itemrepos.findPendingInventory(id);
-        return count- pending;
-    }
+
 
     // update product price
 
@@ -188,39 +164,39 @@ public class ShopkeeperController
 
    }
 
-    @GetMapping("/orders/status/{orderstatus}")
-    public List<Order> OrdersByStatus(@PathVariable String orderstatus)
-    {
-        List<Order> foundOrders = orderrepos.getAllByOrderstatusEquals(orderstatus);
-        if (foundOrders.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return foundOrders;
-        }
-    }
+//    @GetMapping("/orders/status/{orderstatus}")
+//    public List<Order> OrdersByStatus(@PathVariable String orderstatus)
+//    {
+//        List<Order> foundOrders = orderrepos.getAllByOrderstatusEquals(orderstatus);
+//        if (foundOrders.isEmpty())
+//        {
+//            return null;
+//        }
+//        else
+//        {
+//            return foundOrders;
+//        }
+//    }
 
     // update order status by customerid
 
     //TODO when order is completed the items must be removed from??
-    @PutMapping("/order/id/{id}")
-    public List<Order> updateOrderStatusByOrderId(@RequestBody Order neworder, @PathVariable long id) throws URISyntaxException
-    {
-        Optional<Order> updatedOrder = orderrepos.findById(id);
-        if (updatedOrder.isPresent())
-        {
-            neworder.setOrderstatus("complete");
-            orderrepos.save(neworder);
-
-            return java.util.Arrays.asList(neworder);
-        }
-        else
-        {
-            return updatedOrder.stream().collect(Collectors.toList());
-        }
-    }
+//    @PutMapping("/order/id/{id}")
+//    public List<Order> updateOrderStatusByOrderId(@RequestBody Order neworder, @PathVariable long id) throws URISyntaxException
+//    {
+//        Optional<Order> updatedOrder = orderrepos.findById(id);
+//        if (updatedOrder.isPresent())
+//        {
+//            neworder.setOrderstatus("complete");
+//            orderrepos.save(neworder);
+//
+//            return java.util.Arrays.asList(neworder);
+//        }
+//        else
+//        {
+//            return updatedOrder.stream().collect(Collectors.toList());
+//        }
+//    }
 
     // update order status by order id
 

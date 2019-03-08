@@ -1,19 +1,45 @@
--- insert into customer(custid,custname,custemail, shippingaddress, billingaddress, custphone, paymentmethod )
--- values ( 3001,gina, "gina@email.com", "697 some rd", "3847 some rd", "555-483-2738", "visa" ),
---        ( 3002,molly, "molly@email.com", "67 any rd", "47 candy rd", "678-483-2738", "mastercard" );
+-- insert into shopping.supplier( suppliername)
+-- values( "Rainbow Supplies"),
+--       ("Supplies Are Us"),
+--       ("Random Supplies");
 --
--- insert into cart (cartid,cartname, custid)
--- values (500, "gina's cart", 3001),
---        (502, "molly's cart", 3002);
+-- insert into shopping.product (productdescription, productimage, productname, productprice)
+-- values("something to hold your coffee", "urlcup", "Coffee Mug", 5.79),
+--       ("to wear", "url.shirt", "T-Shirt", 10.99),
+--       ("glass-cleaner", "url.windex", "Windex", 3.88);
 --
--- insert into item(itemid,productid)
--- values ( 80001, 20000),
---        (80002, 20000),
---        (99999,33999),
---        (94758,45000);
+-- insert into shopping.productsuppliers
+-- values(1,3),
+--       (1,1),
+--       (2,3),
+--       (2,1),
+--       (3,2),
+--       (3,3);
 --
--- insert into "order"(orderid,custid, orderstatus)
--- values(6000, 3001,"ordered");
+-- insert into shopping.customer
+-- values(222, "567 Apple Rd", "molly@email.com", "Molly", "857-483-9483", "VISA", "567 Apple Rd"),
+--       (333, "938 Dear Ave", "gina@email.com", "Gina", "483-393-8475", "MasterCard", "9484 Morrow st");
 --
--- insert into product()
+-- insert into shopping.cart (cartname,custid)
+-- values("Ginas Cart", 333),
+--       ("Molly's Cart", 222);
+--
+-- insert into shopping.orders
+-- values (690, true, "02/23/2019", 333);
+--
+-- insert into shopping.item (itemid,bought,incart,productid)
+-- values (400, false, false, 3),
+--        (401, false, false, 3),
+--        (502, false, false, 2),
+--        (700, false, false, 1);
+--
+-- insert into shopping.item (itemid,bought,incart,cartid, productid)
+-- values (420, false, true, 2, 3),
+--        (730, false, true, 2, 1);
+--
+--
+-- insert into shopping.item (itemid,bought,incart,cartid, orderid, productid)
+-- values (539, true,false, 2, 690, 2);
+
+
 
