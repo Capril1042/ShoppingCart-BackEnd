@@ -32,23 +32,14 @@ public class CustomerController
 
 
     // TODO add endpoints for items
-
-    //TODO- endpoints for cart
-    // get all items in cart - customer/cart/{customerid}
-//    @GetMapping("cart/items/{id}")
-//    public List<Item> getItemsinCart(long id)
-//    {
-//        return itemrepos.getAllCartItems(id);
-//    }
-    // remove items from cart - customer/{customerid}/cart/{itemid}
-    // adds item to cart customer/{customerid}/cart/{itemid}
-
-    // TODO- endpoints for order
-    // add order - adds an order with a statua of pending
-    // removes cartid from order
+        // get all items by cartid - returns items in cart
+        // add/remove item to cart == update item by item id
+        // add an order - also updates items by cart id/removing cart id
 
 
-    //cannot change or delete orders
+
+
+
 
 
 }

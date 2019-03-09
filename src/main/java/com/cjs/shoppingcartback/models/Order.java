@@ -30,6 +30,7 @@ public class Order
 
     @OneToMany(mappedBy = "order")
     @JsonIgnoreProperties("order")
+    @JsonIgnore
     private Set<Item> items = new HashSet<>();
 
 

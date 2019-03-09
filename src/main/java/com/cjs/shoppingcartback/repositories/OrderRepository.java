@@ -10,7 +10,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>
 {
     List<Order> findOrdersByCustomer_Custid(long id);
 
-//
-//    List<Order> getAllByOrderstatusEquals(String orderstatus);
+    List<Order> getAllByOrdercompleteIsTrue();
+
+    List<Order> getAllByOrdercompleteIsFalse();
 
 }

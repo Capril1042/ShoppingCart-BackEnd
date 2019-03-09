@@ -5,6 +5,9 @@ import com.cjs.shoppingcartback.repositories.ItemRepository;
 import com.cjs.shoppingcartback.repositories.OrderRepository;
 import com.cjs.shoppingcartback.repositories.ProductRepository;
 import com.cjs.shoppingcartback.repositories.SupplierRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +33,28 @@ public class ShopkeeperController
     @Autowired
     ItemRepository itemrepos;
 
+    @ApiOperation(value = "returns a list of all suppliers", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/suppliers")
     public List<Supplier> getAllSuppliers()
     {
         return supplierrepos.findAll();
     }
 
+    @ApiOperation(value = "returns a list of suppliers with a certain supplierid", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/supplier/id/{id}")
     public Optional<Supplier> getSupplierById(@PathVariable long id)
     {
@@ -49,7 +68,14 @@ public class ShopkeeperController
         }
     }
 
-    //TODO This works but not for duplicate names? fix model so that suppliername must be unique?
+    @ApiOperation(value = "returns a list of suppliers by name", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/supplier/name/{name}")
     public List<Supplier> getSupplierByName(@PathVariable String name)
     {
@@ -64,14 +90,28 @@ public class ShopkeeperController
         }
     }
 
-    //TODO this works but clean it up
+    @ApiOperation(value = "Adds a new Supplier", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @PostMapping("/add/supplier")
     public Supplier newSupplier(@RequestBody Supplier supplier) throws URISyntaxException
     {
         return supplierrepos.save(supplier);
     }
 
-
+    @ApiOperation(value = "updates a supplier", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @PutMapping("/supplier/id/{id}")
     public List<Supplier> updateSupplier(@RequestBody Supplier newSupplier, @PathVariable long id) throws URISyntaxException
     {
@@ -89,53 +129,76 @@ public class ShopkeeperController
         }
     }
 
-    @GetMapping("/product/countinventory/{id}")
-    public int countInventory(@PathVariable long id)
+
+
+
+    @PutMapping("/product/update/{id}")
+    public List<Product> updateProduct(@RequestBody Product newproduct, @PathVariable long id) throws URISyntaxException
     {
-        return itemrepos.findCountOfProduct(id);
+        Optional<Product> updatedProduct = productrepos.findById(id);
+        if (updatedProduct.isPresent())
+        {
+            productrepos.save(newproduct);
+
+            return java.util.Arrays.asList(newproduct);
+        }
+        else
+        {
+            return updatedProduct.stream().collect(Collectors.toList());
+        }
     }
 
-    // count quantity of items of a specific product that are in a carts
-    @GetMapping("/product/countpending/{id}")
-    public int countPending(@PathVariable long id)
-    {
-        return itemrepos.findPendingInventory(id);
-    }
-
-
-
-    // update product price
-
-    // add new product to a supplier already in database
-
-    //add a new product with a new supplier
-
-
-
+    @ApiOperation(value = "returns all items", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/items")
     public List<Item> getAllItems()
     {
         return itemrepos.findAll();
     }
 
-    // get all items with supplierid
 
-    // get all items with produt id
+    @ApiOperation(value = "returns a list of items by productid", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/items/productid/{id}")
     public List<Item> getitemsbyProduct(@PathVariable long id)
     {
         return itemrepos.findItemByProductId(id);
     }
 
-    // add items with product id and supplier id
-
-
+    @ApiOperation(value = "returns a list of all orders", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/orders")
     public List<Order> getAllOrders()
     {
         return orderrepos.findAll();
     }
 
+    @ApiOperation(value = "returns a order by its orderid", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
     @GetMapping("/order/id/{id}")
     public Optional<Order> getOrderById(@PathVariable long id)
     {
@@ -149,6 +212,14 @@ public class ShopkeeperController
         }
     }
 
+    @ApiOperation(value = "returns a list of orders by customerid", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
    @GetMapping("/orders/custid/{id}")
     public List<Order> getOrdersByCustid(@PathVariable long id)
    {
@@ -164,46 +235,54 @@ public class ShopkeeperController
 
    }
 
-//    @GetMapping("/orders/status/{orderstatus}")
-//    public List<Order> OrdersByStatus(@PathVariable String orderstatus)
-//    {
-//        List<Order> foundOrders = orderrepos.getAllByOrderstatusEquals(orderstatus);
-//        if (foundOrders.isEmpty())
-//        {
-//            return null;
-//        }
-//        else
-//        {
-//            return foundOrders;
-//        }
-//    }
+    @ApiOperation(value = "returns completes orders", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
+    @GetMapping("/orders/status/complete")
+    public List<Order> OrdersByStatusComplete()
+    {
+        List<Order> foundOrders = orderrepos.getAllByOrdercompleteIsTrue();
+        if (foundOrders.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return foundOrders;
+        }
+    }
 
-    // update order status by customerid
+    @ApiOperation(value = "returns non completes orders", response = List.class)
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "Successfully retrieve list"),
+                    @ApiResponse(code = 401, message = "Not authorized for this resource"),
+                    @ApiResponse(code = 403, message = "Access to resource forbidden"),
+                    @ApiResponse(code = 404, message = "Resource not found")
+            })
+    @GetMapping("/orders/status/notcomplete")
+    public List<Order> OrdersByStatusNotComplete()
+    {
+        List<Order> foundOrders = orderrepos.getAllByOrdercompleteIsFalse();
+        if (foundOrders.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return foundOrders;
+        }
+    }
 
-    //TODO when order is completed the items must be removed from??
-//    @PutMapping("/order/id/{id}")
-//    public List<Order> updateOrderStatusByOrderId(@RequestBody Order neworder, @PathVariable long id) throws URISyntaxException
-//    {
-//        Optional<Order> updatedOrder = orderrepos.findById(id);
-//        if (updatedOrder.isPresent())
-//        {
-//            neworder.setOrderstatus("complete");
-//            orderrepos.save(neworder);
-//
-//            return java.util.Arrays.asList(neworder);
-//        }
-//        else
-//        {
-//            return updatedOrder.stream().collect(Collectors.toList());
-//        }
-//    }
+    //ToDo Finish out ShopKeeper endpoints
 
-    // update order status by order id
-
-
-
-    // get total price of order
-
+        // update order
+        // update item
 
 
 

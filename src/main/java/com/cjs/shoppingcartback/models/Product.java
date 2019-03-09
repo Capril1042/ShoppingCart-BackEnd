@@ -39,7 +39,7 @@ public class Product
     private Set<Supplier> suppliers = new HashSet<>();
 
 
-//    @JsonManagedReference
+
     @OneToMany(mappedBy = "product")
     @JsonIgnoreProperties("product")
     @JsonIgnore
