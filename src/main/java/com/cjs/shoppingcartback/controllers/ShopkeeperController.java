@@ -1,10 +1,7 @@
 package com.cjs.shoppingcartback.controllers;
 
 import com.cjs.shoppingcartback.models.*;
-import com.cjs.shoppingcartback.repositories.ItemRepository;
-import com.cjs.shoppingcartback.repositories.OrderRepository;
-import com.cjs.shoppingcartback.repositories.ProductRepository;
-import com.cjs.shoppingcartback.repositories.SupplierRepository;
+import com.cjs.shoppingcartback.repositories.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,6 +30,9 @@ public class ShopkeeperController
 
     @Autowired
     ItemRepository itemrepos;
+
+    @Autowired
+    CartRepository cartrepos;
 
     @ApiOperation(value = "returns a list of all suppliers", response = List.class)
     @ApiResponses(value =
@@ -279,10 +280,22 @@ public class ShopkeeperController
         }
     }
 
-    //ToDo Finish out ShopKeeper endpoints
+    @GetMapping("/cart/custid/{id}")
+    public List<Cart> getCustomersCart(@PathVariable long id)
+    {
+        return cartrepos.getCartByCustomerId(id);
+    }
 
-        // update order
-        // update item
+
+    @GetMapping("/order/update/{id}/cart/{cartid}")
+    public Order updateOrder(@PathVariable long id, @PathVariable long cartid) throws URISyntaxException
+    {
+        itemrepos.updateorderedItems(cartid);
+        return orderrepos.updateOrderStatusSk(id);
+
+    }
+
+
 
 
 

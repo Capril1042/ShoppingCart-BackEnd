@@ -35,6 +35,30 @@ public class CustomerController
         // get all items by cartid - returns items in cart
         // add/remove item to cart == update item by item id
         // add an order - also updates items by cart id/removing cart id
+    @GetMapping("/cart/custid/{id}")
+    public List<Cart> getCustomersCart(@PathVariable long id)
+    {
+        return cartrepos.getCartByCustomerId(id);
+    }
+
+    @GetMapping("/cart/items/{id}")
+    public List<Item> allCartItems(@PathVariable long id)
+    {
+        return itemrepos.itemsInCart(id);
+    }
+
+    @GetMapping("cart/{cartid}/add/item/{itemid}")
+    public Item addItemToCart(@PathVariable long cartid, long itemid)
+    {
+        return itemrepos.addItemToCart(cartid, itemid);
+    }
+
+    @GetMapping("cart/remove/item/{cartid}")
+    public Item removefromcart(@PathVariable long id)
+    {
+        return itemrepos.removeItemFromCart(id);
+    }
+
 
 
 
