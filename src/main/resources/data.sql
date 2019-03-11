@@ -43,3 +43,33 @@
 
 
 
+-- CREATE TABLE `user` (
+--                       `id` int(11) NOT NULL AUTO_INCREMENT,
+--                       `username` varchar(256) NOT NULL,
+--                       `password` char(60) NOT NULL,
+--                       `role` varchar(256) NOT NULL,
+--                       PRIMARY KEY (`id`),
+--                       UNIQUE KEY `username_UNIQUE` (`username`)
+-- )
+--
+-- insert into user (user.username, user.password, user.role)
+-- values("sally", "password", "user"),
+--       ("charlie", "password", "user"),
+--       ("linus", "password", "user"),
+--       ("lucy", "ILuvM4th!", "ADMIN")
+--
+--   have not gotten this to work in the REST client in IntelliJ. For those of you who know Postman, you might want to try that. For the rest of us, terminal curls are working for me. So for my code currently in GitHub,
+--
+--   Go to a terminal prompt and enter:
+--
+--   curl -X POST --user 'lambda-client:password' -d 'grant_type=password&username=lucy&password=ILuvM4th!' http://localhost:2019/oauth/token
+--
+--   You will get a response like:
+--   {"access_token":"35a8038b-d7c4-4427-9db6-3030bd4ac887","token_type":"bearer","refresh_token":"8a264489-b048-4990-86b6-24e4d894b752","expires_in":3364,"scope":"read write trust"}
+--
+--   Copy the access code - in this case 35a8038b-d7c4-4427-9db6-3030bd4ac887 it will vary over time.
+--
+--   Now run (putting the right access in place of mine!):
+--
+--   curl -i -H "Accept: application/json" -H "Authorization: Bearer 35a8038b-d7c4-4427-9db6-3030bd4ac887" -X GET http://localhost:2019/users/user
+--   Collapse
