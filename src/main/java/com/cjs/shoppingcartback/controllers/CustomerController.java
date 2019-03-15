@@ -53,10 +53,11 @@ public class CustomerController
         return itemrepos.addItemToCart(cartid, itemid);
     }
 
-    @GetMapping("cart/remove/item/{cartid}")
-    public Item removefromcart(@PathVariable long id)
+    @GetMapping("cart/remove/item/{itemid}/{cartid}")
+    public Item removefromcart(@PathVariable long itemid,long cartid)
+
     {
-        return itemrepos.removeItemFromCart(id);
+        return itemrepos.removeItemFromCart(itemid, cartid);
     }
 
 

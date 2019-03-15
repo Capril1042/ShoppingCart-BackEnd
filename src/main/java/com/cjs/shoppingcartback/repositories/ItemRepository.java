@@ -22,6 +22,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>
     @Query(value = "update shopping.item Set bought= true, incart= false, cartid =null where cartid=:cartid;", nativeQuery = true)
     List<Item> updateorderedItems(long cartid);
 
+
     @Query(value = "select * from shopping.item where cartid =:id", nativeQuery = true)
     List<Item> itemsInCart(long id);
 
@@ -29,6 +30,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>
     @Query(value = "update shopping.item Set bought= false, incart= true, cartid =:cartid where itemid=:itemid;",nativeQuery = true)
     Item addItemToCart(long cartid,long itemid);
 
-    @Query(value = "update shopping.item Set bought= false, incart= false, cartid =null where cartid=:cartid;", nativeQuery = true)
-    Item removeItemFromCart(long id);
+    @Modifying
+    @Query(value = "update shopping.item Set bought= false, incart= false, cartid =null where cartid=:cartid && itemid=:itemid;", nativeQuery = true)
+    Item removeItemFromCart(long itemid, long cartid);
 }
